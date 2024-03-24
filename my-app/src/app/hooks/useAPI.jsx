@@ -8,7 +8,6 @@ const useAPI = () => {
       if (userData.status === 200) {
         const logined = true;
         const nameKey = { userName, userKey, logined };
-        console.log(userData.data);
         localStorage.setItem("userData", JSON.stringify(nameKey));
         return nameKey;
       } else {
@@ -23,11 +22,8 @@ const useAPI = () => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData) {
       const userLogined = userData.logined;
-      console.log(userData);
-      console.log(userLogined);
       if (userLogined) {
         const userName = userData.userName;
-        console.log(userName);
         return userName;
       } else {
         return false;
@@ -60,18 +56,37 @@ const useAPI = () => {
     }
   };
   const addTask = async (newTitle, newContent) => {
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    const futureIDUser = userData.userName;
-    const addScript = await apiURL.post(
-      `newtask/${newTitle}/${newContent}/${futureIDUser}`
-    );
-    if (addScript.status === 200) {
-      return true;
-    } else {
-      return false;
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const futureIDUser = userData.userName;
+      const addTask = await apiURL.post(
+        `/newtask/${newTitle}/${newContent}/${futureIDUser}`
+      );
+      if (addTask.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(
+        new Error(`Erro na hora de adicionar uma nova tarefa ${err}`)
+      );
     }
   };
-  return { authenticateUser, isLogined, registerUser, addTask };
+  const viewTask = async () => {
+    try {
+      if (typeof window !== "undefined") {
+        const localStorageVar = localStorage.getItem("userData");
+        const userData = JSON.parse(localStorageVar);
+        const futureIDUser = userData.userName;
+        const viewTask = await apiURL.get(`/viewtask/${futureIDUser}`);
+        return viewTask;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  return { authenticateUser, isLogined, registerUser, addTask, viewTask };
 };
 
 export default useAPI;

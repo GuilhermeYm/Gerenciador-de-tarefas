@@ -29,7 +29,7 @@ const addtaskpage = () => {
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex flex-col">
-              <label htmlFor="title">Título</label>
+              <label htmlFor="title" className="text-gray-800 mb-1 text-lg">Título</label>
               <input
                 type="text"
                 name="title"
@@ -37,10 +37,11 @@ const addtaskpage = () => {
                 value={title}
                 placeholder="Título da tarefa"
                 onChange={(e) => setTitle(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               />
             </div>
-            <div>
-              <label htmlFor="content">Conteúdo</label>
+            <div className="flex flex-col">
+              <label htmlFor="content" className="text-gray-800 mb-1 text-lg">Conteúdo</label>
               <input
                 type="text"
                 name="content"
@@ -48,10 +49,11 @@ const addtaskpage = () => {
                 placeholder="Conteúdo da tarefa"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               />
             </div>
-            <div>
-              <input type="submit" value="Nova tarefa" />
+            <div className="flex justify-start mt-1">
+              <input type="submit" value="Nova tarefa" className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300"/>
             </div>
           </form>
         </main>

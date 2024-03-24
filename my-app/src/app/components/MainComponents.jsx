@@ -1,50 +1,159 @@
+"use client";
+import { useEffect, useState } from "react";
 import { CiCircleCheck, CiEdit } from "react-icons/ci";
 import { MdCancel } from "react-icons/md";
+import useAPI from "../hooks/useAPI";
+import { useRouter } from "next/navigation";
 
 const MainComponents = () => {
-  const taskExample = [""];
+  const { viewTask } = useAPI();
+  const [arrayTask, setArrayTask] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
+  const router = useRouter()
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const task = await viewTask();
+        if (task.data && task.data.user) {
+          const arrayTask = task.data.user;
+          setArrayTask(arrayTask);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+  const handleClick = (taskID) => {
+    router.push(`/task/${taskID}`)
+  };
+  useEffect(() => {
+    const verificateDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    if (verificateDarkMode) {
+      setDarkMode(verificateDarkMode);
+      document.body.classList.toggle("bg-black", verificateDarkMode);
+    }
+  }, []);
   return (
-    <main className="px-4 min-w-full flex flex-col items-center">
+    <main
+      className={`px-4 min-w-full flex flex-col items-center ${
+        darkMode ? "bg-black text-white" : "bg-white text-black"
+      }`}
+    >
       <h1 className="text-lg font-semibold">Tarefas</h1>
       <div>
-        <table className="table-fixed border border-slate-500 border-collapse h-auto w-50%">
+        <table
+          className={`table-fixed border ${
+            darkMode ? "border-gray-600" : "border-slate-500"
+          } border-collapse h-auto w-50% ${
+            darkMode ? "bg-gray-800 text-white" : "bg-gray-200 text-gray-800"
+          }`}
+        >
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border-slate-600 border px-4 py-2">ID</th>
-              <th className="border-slate-600 border px-4 py-2">Título</th>
-              <th className="border-slate-600 border px-4 py-2">
+            <tr className={`${darkMode ? "bg-gray-700" : "bg-gray-200"}`}>
+              <th
+                className={`${
+                  darkMode ? "border-gray-600" : "border-slate-600"
+                } border px-4 py-2`}
+              >
+                ID
+              </th>
+              <th
+                className={`${
+                  darkMode ? "border-gray-600" : "border-slate-600"
+                } border px-4 py-2`}
+              >
+                Título
+              </th>
+              <th
+                className={`${
+                  darkMode ? "border-gray-600" : "border-slate-600"
+                } border px-4 py-2`}
+              >
                 Conteúdo da Tarefa
               </th>
-              <th className="border-slate-600 border px-4 py-2">Feito?</th>
-              <th className="border-slate-600 border px-4 py-2">Ações</th>
+              <th
+                className={`${
+                  darkMode ? "border-gray-600" : "border-slate-600"
+                } border px-4 py-2`}
+              >
+                Feito?
+              </th>
+              <th
+                className={`${
+                  darkMode ? "border-gray-600" : "border-slate-600"
+                } border px-4 py-2`}
+              >
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody>
-            {taskExample.map((task) => (
-              <tr className="hover:bg-gray-100">
-                <td className="border border-slate-600 px-4 py-2">{task.id}</td>
-                <td className="border border-slate-600 px-4 py-2">
+            {arrayTask.map((task) => (
+              <tr
+                className={`${
+                  darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
+                } cursor-pointer`}
+                key={task.idTask}
+                onClick={(e) => handleClick(task.idTask)}
+              >
+                <td
+                  className={`${
+                    darkMode ? "border-gray-600" : "border-slate-600"
+                  } border px-4 py-2`}
+                >
+                  {task.idTask}
+                </td>
+                <td
+                  className={`${
+                    darkMode ? "border-gray-600" : "border-slate-600"
+                  } border px-4 py-2`}
+                >
                   {task.title}
                 </td>
-                <td className="border border-slate-600 px-4 py-2">
+                <td
+                  className={`${
+                    darkMode ? "border-gray-600" : "border-slate-600"
+                  } border px-4 py-2`}
+                >
                   {task.content}
                 </td>
-                <td className="border border-slate-600 px-4 py-2">
+                <td
+                  className={`${
+                    darkMode ? "border-gray-600" : "border-slate-600"
+                  } border px-4 py-2`}
+                >
                   {task.done}
                 </td>
-                <td className="border border-slate-600">
+                <td
+                  className={`${
+                    darkMode ? "border-gray-600" : "border-slate-600"
+                  } border`}
+                >
                   <div className="flex flex-row justify-between">
-                    <button className="text-2xl hover:text-green-600 transition-colors">
+                    <button
+                      className={`text-2xl hover:text-green-600 transition-colors ${
+                        darkMode ? "text-white" : "text-black"
+                      }`}
+                    >
                       <i>
                         <CiCircleCheck />
                       </i>
                     </button>
-                    <button className="text-2xl hover:text-red-600 transition-colors">
+                    <button
+                      className={`text-2xl hover:text-red-600 transition-colors ${
+                        darkMode ? "text-white" : "text-black"
+                      }`}
+                    >
                       <i>
                         <MdCancel />
                       </i>
                     </button>
-                    <button className="text-2xl hover:text-blue-600 transition-colors">
+                    <button
+                      className={`text-2xl hover:text-blue-600 transition-colors ${
+                        darkMode ? "text-white" : "text-black"
+                      }`}
+                    >
                       <i>
                         <CiEdit />
                       </i>
@@ -56,11 +165,14 @@ const MainComponents = () => {
           </tbody>
         </table>
       </div>
-      <p className="mt-2 flex flex-row italic text-zinc-400">
+      <p
+        className={`mt-2 flex flex-row italic ${
+          darkMode ? "text-gray-300" : "text-zinc-400"
+        }`}
+      >
         Se você clicar na tarefa, você irá conseguir ver o conteúdo inteiro!
       </p>
     </main>
   );
 };
-
 export default MainComponents;

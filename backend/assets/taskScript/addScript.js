@@ -10,7 +10,7 @@ const addTask = (newTitle, newContent, nameUser) => {
     const findUser = userJsonContent.find((users) => users.name === nameUser);
     const id = findUser ? findUser.id : null;
     const objectExample = {
-      idAuthor: id,
+    idAuthor: id,
       title: newTitle,
       content: newContent,
       done: false,
@@ -19,6 +19,7 @@ const addTask = (newTitle, newContent, nameUser) => {
     taskContent.push(objectExample);
     const newJson = JSON.stringify(taskContent, null, 2);
     fs.writeFileSync(fileTaskPath.fileTaskPath, newJson);
+    console.log(taskContent);
   } catch (err) {
     console.log(
       new Error(
@@ -37,4 +38,3 @@ router.post("/:title/:content/:name_user", (req, res) => {
 });
 
 module.exports = { addTaskRouter: router };
-
