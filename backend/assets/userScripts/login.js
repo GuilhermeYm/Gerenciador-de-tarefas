@@ -5,7 +5,7 @@ const { generateID } = require("../generateID");
 
 const loginFunction = (nameParams, keyParams) => {
   const json = jsonCONTENT.jsonCONTENT;
-  console.log(json)
+  console.log(json);
   const user = json.find(
     (user) => user.name === nameParams && user.key === keyParams
   );

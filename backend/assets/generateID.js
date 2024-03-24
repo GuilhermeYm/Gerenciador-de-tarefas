@@ -28,5 +28,4 @@ const generateIdTask = () => {
   const filePath = fileTaskPath.fileTaskPath;
   fs.writeFileSync(filePath, newTaskContent);
 };
-module.exports = { generateID : generateID };
-module.exports = { generateIdTask : generateIdTask}
+module.exports = {generateID, generateIdTask};

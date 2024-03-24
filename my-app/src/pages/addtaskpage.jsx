@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import "../app/globals.css";
 import HeaderComponents from "@/app/components/HeaderComponents";
 import useAPI from "@/app/hooks/useAPI";
+import { useRouter } from "next/navigation";
 const addtaskpage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("")
   const { addTask } = useAPI();
+  const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
     const task = addTask(title, content);
     if(task) {
       setMessage("")
+      router.push(`/ `)
     } else {
       setMessage('Deu algum erro na hora de adicionar a tarefa. Tente novamente')
     }
