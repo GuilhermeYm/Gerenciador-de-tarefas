@@ -8,7 +8,7 @@ const TaskView = () => {
   const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
   const [taskContent, setTaskContent] = useState("");
-  const [taskTitle, setTaskTitle] = useState("")
+  const [taskTitle, setTaskTitle] = useState("");
   const { viewTask } = useAPI();
   const { id } = router.query;
 
@@ -28,10 +28,12 @@ const TaskView = () => {
           const arrayTask = viewTaskVerificate.data.user;
 
           // Encontrar a tarefa com base no ID
-          const foundTask = arrayTask.find(task => task.idTask === parseInt(id));
+          const foundTask = arrayTask.find(
+            (task) => task.idTask === parseInt(id)
+          );
           if (foundTask) {
             setTaskContent(foundTask.content);
-            setTaskTitle(foundTask.title)
+            setTaskTitle(foundTask.title);
           }
         } else {
           console.log(new Error(`UseEffect: Não há dados de usuário`));
@@ -41,20 +43,55 @@ const TaskView = () => {
       }
     };
     setContent();
-  }, [id]); 
+  }, [id]);
 
   return (
     <>
       <header>
         <HeaderComponents />
-      </header>{" "}
-      <main>
-        <div className="flex flex-col justify-center items-center">
-          <h2>Tarefa</h2>
-          <div>
-            <p>Título da task: {taskTitle}</p>
-            <p>Conteúdo da task: {taskContent}</p>
-            <p>Id da Task: {id}</p>
+      </header>
+      <main className="h-screen w-full flex justify-center">
+        <div
+          className={`flex flex-col items-center ${
+            !darkMode ? "text-white" : "text-black"
+          }`}
+        >
+          <h2
+            className={`mt-8 text-2xl mb-4 font-semibold ${
+              !darkMode ? "text-white border-b border-white" : "text-black "
+            }`}
+          >
+            Tarefa
+          </h2>
+          <div
+            className={`rounded-lg shadow-md p-6 max-w-md ${
+              !darkMode ? "text-white bg-gray-900 shadow-gray-400 shadow-sm" : "text-black bg-white"
+            }`}
+          >
+            <div
+              className={`flex-col mb-4 ${
+                !darkMode ? "text-white" : "text-black"
+              }`}
+            >
+              <p className="text-lg font-semibold">Título da task:</p>
+              <p>{taskTitle}</p>
+            </div>
+            <div
+              className={`flex-col mb-4 ${
+                !darkMode ? "text-white" : "text-black"
+              }`}
+            >
+              <p className="text-lg font-semibold">Conteúdo da task:</p>
+              <p>{taskContent}</p>
+            </div>
+            <div
+              className={`flex-col mb-4 ${
+                !darkMode ? "text-white" : "text-black"
+              }`}
+            >
+              <p className="font-semibold text-lg ">Id da Task:</p>
+              <p>{id}</p>
+            </div>
           </div>
         </div>
       </main>

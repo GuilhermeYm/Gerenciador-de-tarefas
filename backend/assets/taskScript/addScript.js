@@ -10,7 +10,7 @@ const addTask = (newTitle, newContent, nameUser) => {
     const findUser = userJsonContent.find((users) => users.name === nameUser);
     const id = findUser ? findUser.id : null;
     const objectExample = {
-    idAuthor: id,
+      idAuthor: id,
       title: newTitle,
       content: newContent,
       done: false,

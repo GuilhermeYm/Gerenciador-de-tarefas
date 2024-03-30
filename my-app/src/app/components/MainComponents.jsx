@@ -9,7 +9,8 @@ const MainComponents = () => {
   const { viewTask } = useAPI();
   const [arrayTask, setArrayTask] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
-  const router = useRouter()
+  const { deleteTask } = useAPI();
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,7 +26,7 @@ const MainComponents = () => {
     fetchData();
   }, []);
   const handleClick = (taskID) => {
-    router.push(`/task/${taskID}`)
+    router.push(`/task/${taskID}`);
   };
   useEffect(() => {
     const verificateDarkMode = JSON.parse(localStorage.getItem("darkMode"));
@@ -34,6 +35,14 @@ const MainComponents = () => {
       document.body.classList.toggle("bg-black", verificateDarkMode);
     }
   }, []);
+  const deleteTaskFunction = async (taskID) => {
+    const deleteTaskVar = await deleteTask(taskID);
+    if (deleteTaskVar) {
+      return true;
+    } else {
+      console.log(new Error("Erro na hora de deletar a task"));
+    }
+  };
   return (
     <main
       className={`px-4 min-w-full flex flex-col items-center ${
@@ -95,7 +104,7 @@ const MainComponents = () => {
                   darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
                 } cursor-pointer`}
                 key={task.idTask}
-                onClick={(e) => handleClick(task.idTask)}
+                onDoubleClick={() => handleClick(task.idTask)} // Movido o handleClick para cá
               >
                 <td
                   className={`${
@@ -144,6 +153,7 @@ const MainComponents = () => {
                       className={`text-2xl hover:text-red-600 transition-colors ${
                         darkMode ? "text-white" : "text-black"
                       }`}
+                      onClick={(e) => deleteTaskFunction(task.idTask)}
                     >
                       <i>
                         <MdCancel />

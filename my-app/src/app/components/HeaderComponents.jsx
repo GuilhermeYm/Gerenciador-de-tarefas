@@ -2,13 +2,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import useAPI from "../hooks/useAPI";
-
+import { useRouter } from "next/navigation";
 const HeaderComponents = () => {
   const { isLogined } = useAPI();
   const [name, setName] = useState("");
   const [dropdownOpen, setDropDownOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     const loggedInUserName = isLogined();
     setName(loggedInUserName || "");
@@ -28,14 +28,18 @@ const HeaderComponents = () => {
     setDarkMode(newDarkMode);
     localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
     document.body.classList.toggle("bg-black", newDarkMode);
-    window.location.reload()
+    window.location.reload();
   };
-
+  const addTaskClick = () => {
+    router.push("/addtaskpage");
+  };
   return (
     <>
       <nav
         className={`flex flex-row justify-between p-4 ${
-          darkMode ? "bg-gray-800 text-white shadow-gray-300 shadow-sm" : "bg-gray-200 text-gray-800"
+          darkMode
+            ? "bg-gray-800 text-white shadow-gray-300 shadow-sm"
+            : "bg-gray-200 text-gray-800"
         } mb-2`}
       >
         <h1 className="text-lg font-semibold">Gerenciador de tarefas</h1>
@@ -44,12 +48,13 @@ const HeaderComponents = () => {
             <Link href="/">Home</Link>
           </li>
           <li>
+            <button onClick={(e) => addTaskClick()}>Adicionar tarefa</button>
+          </li>
+          <li>
             {name ? (
               <Link
                 href="/"
-                className={`${
-                  darkMode ? "text-white" : "text-gray-800"
-                }`}
+                className={`${darkMode ? "text-white" : "text-gray-800"}`}
                 onClick={toggleDropdown}
               >
                 {name}

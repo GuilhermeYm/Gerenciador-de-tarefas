@@ -1,6 +1,7 @@
 import { useState } from "react";
 import apiURL from "../axios/config";
 import { MdRestaurantMenu } from "react-icons/md";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 const useAPI = () => {
   const authenticateUser = async (userName, userKey) => {
     try {
@@ -86,7 +87,19 @@ const useAPI = () => {
       console.log(err);
     }
   };
-  return { authenticateUser, isLogined, registerUser, addTask, viewTask };
+  const deleteTask = async (idTask) => {
+    try {
+      const deleteTask = await apiURL.post(`/deletetask/${idTask}`)
+      if (deleteTask) {
+        return true
+      } else {
+        return false
+      }
+    } catch(err) {
+      console.log(err)
+    }
+  };
+  return { authenticateUser, isLogined, registerUser, addTask, viewTask, deleteTask};
 };
 
 export default useAPI;
