@@ -111,6 +111,18 @@ const useAPI = () => {
       console.log(err);
     }
   };
+  const doneTask = async (idTask) => {
+    try {
+      const doneTask = await apiURL.post(`/donetask/${idTask}`);
+      if (doneTask) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return {
     authenticateUser,
     isLogined,
@@ -118,7 +130,8 @@ const useAPI = () => {
     addTask,
     viewTask,
     deleteTask,
-    editTask
+    editTask,
+    doneTask,
   };
 };
 

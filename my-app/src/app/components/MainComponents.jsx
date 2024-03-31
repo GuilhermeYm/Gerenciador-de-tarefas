@@ -9,7 +9,7 @@ const MainComponents = () => {
   const { viewTask } = useAPI();
   const [arrayTask, setArrayTask] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
-  const { deleteTask } = useAPI();
+  const { deleteTask, doneTask} = useAPI();
   const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +45,16 @@ const MainComponents = () => {
   };
   const editTaskFunction = (title, content, idTask) => {
     router.push(`/task/${title}/${content}/${idTask}/page`)
+  }
+  const doneTaskFunction = async (idTask) => {
+    try {
+      const doneTaskVar = await doneTask(idTask)
+      if (doneTaskVar) {
+        return true
+      }
+    } catch (err) {
+      console.log(new Error(`${err}`))
+    }
   }
   return (
     <main
@@ -147,6 +157,7 @@ const MainComponents = () => {
                       className={`text-2xl hover:text-green-600 transition-colors ${
                         darkMode ? "text-white" : "text-black"
                       }`}
+                      onClick={(e) => doneTaskFunction(task.idTask)}
                     >
                       <i>
                         <CiCircleCheck />
