@@ -1,29 +1,44 @@
-import HeaderComponents from "@/app/components/HeaderComponents";
-import "@/app/globals.css";
+import { useState, useEffect } from "react";
 import useAPI from "@/app/hooks/useAPI";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import HeaderComponents from "@/app/components/HeaderComponents";
+import Link from "next/link";
+import "@/app/globals.css";
 
 export default function RegisterPage() {
+  const [darkMode, setDarkMode] = useState(false);
   const [name, setName] = useState("");
   const [key, setKey] = useState("");
   const [email, setEmail] = useState("");
   const { registerUser } = useAPI();
-  const router  = useRouter();
+  const router = useRouter();
+
+  useEffect(() => {
+    const verificateDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    if (verificateDarkMode) {
+      setDarkMode(verificateDarkMode);
+      document.body.classList.toggle("bg-black", verificateDarkMode);
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isRegistered = await registerUser(name, key, email);
     if (isRegistered) {
-      router.push('/');
+      router.push("/");
     }
   };
+
   return (
     <>
       <header>
         <HeaderComponents />
       </header>
-      <div className="flex justify-center h-screen bg-gray-100 items-center">
+      <div
+        className={`flex justify-center h-screen ${
+          darkMode ? "bg-black text-white" : "bg-gray-100"
+        } items-center`}
+      >
         <main className="bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-semibold text-zinc-800 text-center">
             Registrar-se

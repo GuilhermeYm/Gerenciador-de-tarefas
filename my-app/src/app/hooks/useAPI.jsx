@@ -89,17 +89,37 @@ const useAPI = () => {
   };
   const deleteTask = async (idTask) => {
     try {
-      const deleteTask = await apiURL.post(`/deletetask/${idTask}`)
+      const deleteTask = await apiURL.post(`/deletetask/${idTask}`);
       if (deleteTask) {
-        return true
-      } else {
-        return false
+        return true;
       }
-    } catch(err) {
-      console.log(err)
+      return false;
+    } catch (err) {
+      console.log(err);
     }
   };
-  return { authenticateUser, isLogined, registerUser, addTask, viewTask, deleteTask};
+  const editTask = async (newTitle, newContent, idTask) => {
+    try {
+      const ediTask = await apiURL.post(
+        `/edittask/${newTitle}/${newContent}/${idTask}`
+      );
+      if (ediTask) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  return {
+    authenticateUser,
+    isLogined,
+    registerUser,
+    addTask,
+    viewTask,
+    deleteTask,
+    editTask
+  };
 };
 
 export default useAPI;

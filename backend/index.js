@@ -7,6 +7,8 @@ const { registerRouter} = require('./assets/userScripts/register.js');
 const { addTaskRouter } = require("./assets/taskScript/addScript.js");
 const { viewScriptRouter } = require("./assets/taskScript/viewScript.js");
 const { deleteTaskRouter } = require("./assets/taskScript/deleteScript.js");
+const { editTaskRouter } = require("./assets/taskScript/editScript.js");
+const { doneTaskRouter } = require("./assets/taskScript/doneScript.js");
 const app = express();
 
 const corsOptions = {
@@ -24,6 +26,9 @@ app.use('/register', registerRouter)
 app.use('/newtask', addTaskRouter)
 app.use('/viewtask', viewScriptRouter)
 app.use('/deletetask', deleteTaskRouter)
+app.use('/edittask', editTaskRouter)
+app.use('/donetask', doneTaskRouter)
+
 app.listen(5173, () => {
   console.log("http://localhost:5173");
   console.log("Servidor aberto");

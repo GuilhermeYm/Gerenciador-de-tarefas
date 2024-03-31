@@ -26,7 +26,7 @@ const MainComponents = () => {
     fetchData();
   }, []);
   const handleClick = (taskID) => {
-    router.push(`/task/${taskID}`);
+    router.push(`/${taskID}`);
   };
   useEffect(() => {
     const verificateDarkMode = JSON.parse(localStorage.getItem("darkMode"));
@@ -43,6 +43,9 @@ const MainComponents = () => {
       console.log(new Error("Erro na hora de deletar a task"));
     }
   };
+  const editTaskFunction = (title, content, idTask) => {
+    router.push(`/task/${title}/${content}/${idTask}/page`)
+  }
   return (
     <main
       className={`px-4 min-w-full flex flex-col items-center ${
@@ -104,7 +107,7 @@ const MainComponents = () => {
                   darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
                 } cursor-pointer`}
                 key={task.idTask}
-                onDoubleClick={() => handleClick(task.idTask)} // Movido o handleClick para cá
+                onDoubleClick={() => handleClick(task.idTask)}
               >
                 <td
                   className={`${
@@ -132,7 +135,7 @@ const MainComponents = () => {
                     darkMode ? "border-gray-600" : "border-slate-600"
                   } border px-4 py-2`}
                 >
-                  {task.done}
+                  {task.done ? "Sim" : "Não"}
                 </td>
                 <td
                   className={`${
@@ -163,6 +166,7 @@ const MainComponents = () => {
                       className={`text-2xl hover:text-blue-600 transition-colors ${
                         darkMode ? "text-white" : "text-black"
                       }`}
+                      onClick={(e) => editTaskFunction(task.title, task.content, task.idTask)}
                     >
                       <i>
                         <CiEdit />

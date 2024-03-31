@@ -1,19 +1,30 @@
-import HeaderComponents from "@/app/components/HeaderComponents";
-import React, { useState } from "react";
-import "@/app/globals.css";
+import { useEffect, useState } from "react";
 import useAPI from "@/app/hooks/useAPI";
 import { useRouter } from "next/router";
-const loginpage = () => {
+import HeaderComponents from "@/app/components/HeaderComponents";
+import "@/app/globals.css";
+
+const LoginPage = () => {
+  const [darkMode, setDarkMode] = useState(false);
   const [name, setName] = useState("");
   const [key, setKey] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { authenticateUser } = useAPI();
   const router = useRouter();
+
+  useEffect(() => {
+    const verificateDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    if (verificateDarkMode) {
+      setDarkMode(verificateDarkMode);
+      document.body.classList.toggle("bg-black", verificateDarkMode);
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isAuthenticated = await authenticateUser(name, key);
     if (isAuthenticated) {
-      setErrorMessage("")
+      setErrorMessage("");
       router.push("/");
     } else {
       setErrorMessage(
@@ -21,18 +32,25 @@ const loginpage = () => {
       );
     }
   };
+
   return (
     <>
       <header>
         <HeaderComponents />
       </header>
-      <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div
+        className={`flex justify-center items-center h-screen ${
+          darkMode ? "bg-black text-white" : "bg-gray-100"
+        }`}
+      >
         <main className="bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-semibold text-gray-800 mb-4">Login</h1>
           <p className="italic mb-6 text-gray-600">
             Digite as informações de acordo com as suas!
           </p>
-          {errorMessage && <div className="text-red-600 mb-4">{errorMessage}</div>}
+          {errorMessage && (
+            <div className="text-red-600 mb-4">{errorMessage}</div>
+          )}
           <div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-col">
@@ -78,4 +96,4 @@ const loginpage = () => {
   );
 };
 
-export default loginpage;
+export default LoginPage;
